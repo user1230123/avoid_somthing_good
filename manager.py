@@ -68,15 +68,18 @@ class SceneManager:
             self.scenes.append(scene)
             self.scenes_dict[scene.__name__] = scene
 
-    def remove_scene(self, scene: list[Type[Scene]] | Type[Scene]):
+    def remove_scene(self, scene: list[Type[Scene]] | Type[Scene]) -> bool:
         """
         Scene 리스트에서 Scene을 제거합니다.
-        렌더링될 Scene을 제거한다면, remove_scene_to_render를 참조하십시오. 
+        렌더링될 Scene을 제거할 경우에는, remove_scene_to_render를 참조하십시오. 
         """
-        if isinstance(scene, list):
-            self.scenes_to_remove.update(scene)
-        else:
-            self.scenes_to_remove.add(scene)
+        if scene in self.scenes:
+            if isinstance(scene, list):
+                self.scenes_to_remove.update(scene)
+            else:
+                self.scenes_to_remove.add(scene)
+            return True
+        return False
 
     def set_scene(self, scene: list[Type[Scene]] | Type[Scene]):
         """

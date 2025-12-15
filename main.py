@@ -14,12 +14,16 @@ FPS = int(os.getenv("FPS", "60"))
 WIDTH = int(os.getenv("WIDTH", "600"))
 HEIGHT = int(os.getenv("HEIGHT", "600"))
 
+TITLE = os.getenv("TITLE", "ASG / Playing")
+
 # Init
 pygame.init()
 
 is_running = True
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+pygame.display.set_caption(TITLE)
 
 # Scene Manager
 # 순환 참조 문제로 인해, Scene이나 GameObject 내부에서 Scene을 Add, Remove, Set하는 것은 추천되지 않습니다.
@@ -29,7 +33,7 @@ scenes: list[Type[Scene]] = [avoid.AvoidScene, menu.MainMenuScene]
 scene_manager: SceneManager = SceneManager(screen, scenes)
 
 # 초기 Scene 설정
-scene_manager.add_scene_to_render('AvoidScene')
+scene_manager.add_scene_to_render('TestScene3D')
 
 # 게임 루프
 while is_running:
