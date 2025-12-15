@@ -8,11 +8,17 @@ C = TypeVar('C', bound=Component)
 
 class GameObject:
     def __init__(self, pos: Vector2 | tuple[float, float], size: tuple[int, int],
-                 texture: pygame.Surface, components: dict[Type[Component], Component] | None = None,
-                 is_visible = True):
+                 texture: pygame.Surface,
+                 is_visible = True, rotation: float = 0,
+
+                 components: dict[Type[Component], Component] | None = None,):
         self.pos = Vector2(pos)
         self.size = size
-        self.texture = pygame.transform.scale(texture, size)
+        self.rotation = rotation
+
+        self.original_texture = pygame.transform.scale(texture, size)
+        self.texture = self.original_texture
+
         self.rect = self.texture.get_rect(center=self.pos)
 
         self.is_visible = is_visible
@@ -42,14 +48,31 @@ class GameObject:
     
     def set_size(self, size: tuple[int, int]):
         self.size = size
-        self.texture = pygame.transform.scale(self.texture, size)
 
-        current_center = self.rect.center
-        self.rect = self.texture.get_rect(center=current_center)
+        self.original_texture = pygame.transform.scale(self.original_texture, size)
+        self._update_texture_rotation()
+
+        # 나머지 Rect 처리는 texture rotation에서 처리됨
     
     def set_pos(self, pos: Vector2 | tuple[float, float]):
         self.pos = Vector2(pos)
         self.rect.center = (int(pos[0]), int(pos[1]))
+
+    def set_rotation(self, angle: float):
+        """회전 각도를 설정합니다."""
+        if angle != self.rotation:
+            self.rotation = angle
+            self._update_texture_rotation()
+            
+    def _update_texture_rotation(self):
+        """텍스처를 회전합니다."""
+        
+        # 텍스처 회전
+        self.texture = pygame.transform.rotate(self.original_texture, self.rotation)
+        
+        # Rect 갱신
+        current_center = self.rect.center
+        self.rect = self.texture.get_rect(center=current_center)
 
     def _update(self, dt: float):
         for component in self.components.values():
@@ -57,4 +80,4 @@ class GameObject:
 
     def _draw(self, screen: pygame.Surface):
         if self.is_visible:
-            screen.blit(self.texture, Vector2(self.pos[0] - (self.size[0] / 2), self.pos[1] - (self.size[1] / 2)) )
+            screen.blit(self.texture, self.rect.topleft)

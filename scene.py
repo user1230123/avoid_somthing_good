@@ -3,7 +3,7 @@ from abc import abstractmethod
 from object import GameObject
 import pygame
 
-if TYPE_CHECKING: # Python 3.10 or less를 위한 Forward Reference Type Checking
+if TYPE_CHECKING: # Forward Reference Type Checking
     from manager import SceneManager
 
 class Scene:

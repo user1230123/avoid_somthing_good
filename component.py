@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from abc import abstractmethod
 
-if TYPE_CHECKING: # Python 3.10 or less를 위한 Forward Reference Type Checking
+if TYPE_CHECKING: # Forward Reference Type Checking
     from object import GameObject
 
 class Component:
