@@ -19,7 +19,7 @@ class TestPhysicsScene(PhysicsScene):
         floor_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         # 두께 5의 선분
         floor_shape = pymunk.Segment(floor_body, (0, floor_height), (600, floor_height), 5)
-        floor_shape.elasticity = 0.5  # 탄성
+        floor_shape.elasticity = 0.1  # 탄성
         floor_shape.friction = 0.8   # 마찰력
         
         # Pymunk Space에 추가
@@ -58,7 +58,7 @@ class TestPhysicsScene(PhysicsScene):
         
         # 초기 위치, 속도 설정
         ball_body.position = ball_pos
-        ball_body.angular_velocity = 1.0 # 회전속도
+        ball_body.angular_velocity = 10 # 회전속도
         
         # PhysicsComponent 생성
         physics_comp = PhysicsComponent(ball_body, ball_shape)

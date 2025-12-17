@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 
 def make_surface(size, color):
     """

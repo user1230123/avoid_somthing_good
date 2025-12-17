@@ -95,8 +95,8 @@ class SceneManager:
             self.scenes_dict[s.__name__] = s
 
     def _on_event(self, event: pygame.event.Event):
-        if len(self.scenes_to_render) > 0:
-            self.scenes_to_render[-1].handle_event(event)
+        for scene in self.scenes_to_render:
+            scene.handle_event(event)
 
     def _update(self, dt: float):
         for scene in self.scenes_to_render: # Render로 지정된 Scene update
