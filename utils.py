@@ -15,13 +15,16 @@ def make_surface(size, color):
 
 #정적물체 생성(플랫폼)
 #생성할 위치와 이미지이름(예:"example.png"같은)
-def makeStaticObject(pos: tuple,size: tuple,imageName: str):
+def makeStaticObject(pos: tuple,imageName: str,size: tuple = None):
 
     static_Object_texture = pygame.image.load(os.path.join("assets","textures", imageName))
-    static_Object_height = static_Object_texture.get_height()
-    static_Object_width = static_Object_texture.get_width()
-    static_Object_size = (static_Object_width, static_Object_height)
-    static_Object_size = size
+
+    if size is None:
+        static_Object_height = static_Object_texture.get_height()
+        static_Object_width = static_Object_texture.get_width()
+        static_Object_size = (static_Object_width, static_Object_height)
+    else:
+        static_Object_size = size
 
     static_body = pymunk.Body(body_type=pymunk.Body.STATIC)
     static_shape = pymunk.Poly.create_box(static_body, static_Object_size)
