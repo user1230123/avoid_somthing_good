@@ -2,6 +2,8 @@ from typing import Type
 from scene import Scene
 import pygame
 
+from scenes.physics_scene import PhysicsScene
+
 class SceneManager:
     # SceneManager는 FIFO (First In First Out) 에 따라 Draw하므로, 마지막 Scene이 위에 그려집니다.
 
@@ -104,6 +106,8 @@ class SceneManager:
 
         for scene in self.scenes_to_remove_render: # Remove 플래그된 Render Scene Remove
             if scene in self.scenes_to_render:
+                if isinstance(scene,PhysicsScene):
+                    scene.remove_physics(scene.objects)
                 self.scenes_to_render.remove(scene)
                 self.render_names_set.discard(scene.__class__.__name__)
         self.scenes_to_remove_render.clear()

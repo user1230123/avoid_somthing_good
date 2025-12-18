@@ -1,5 +1,6 @@
 import pygame
 import pymunk
+from blocks import object_type
 import colors
 import pymunk.pygame_util
 
@@ -10,42 +11,21 @@ import utils
 
 
 class GameStage(PhysicsScene):
-    def __init__(self, screen: pygame.Surface, objects: list[GameObject] = []):
-        super().__init__(screen, objects)
+    def __init__(self, screen: pygame.Surface, objects: list[GameObject] | None = None):
+        if objects is None:
+            objects = []
+        super().__init__(screen, objects,self)
+        
+        floor_pos = (25, 710)
 
-        self.COLLISION_BALL = 1
-        self.COLLISION_PLATFORM = 2
-
-        floor_pos = (640, 710) 
-
-        floor_body = pymunk.Body(body_type=pymunk.Body.STATIC)
-        floor_body.position = floor_pos
-
-        floor_shape = pymunk.Segment(floor_body, (-640, 0), (640, 0), 10)
-
-        floor_shape.elasticity = 1.0
-        floor_shape.collision_type = self.COLLISION_PLATFORM
-        floor_shape.friction = 0.8
-
-        physics_comp = PhysicsComponent(floor_body, floor_shape)
-
-        floor_obj = GameObject(
-            pos=floor_pos, 
-            size=(1280, 20),
-            texture=utils.make_surface((1280, 20), colors.WHITE),
-        )
-        floor_obj.add_component(physics_comp)
-        floor_shape.user_data = floor_obj
-
-        super().add_object(floor_obj)
+        floor_size = (30, 30)
+        
+        for x in range(0,42):
+            floor_pos_rept = (floor_pos[0] + 30*x,floor_pos[1])
+            floor_obj = utils.makeStaticObject(floor_pos_rept,"stone.png",floor_size,object_type.ELEVATOR_BLOCK)
+            super().add_object(floor_obj)
         
         self._create_ball()
-
-        self.space.on_collision(
-            self.COLLISION_BALL,
-            self.COLLISION_PLATFORM,
-            begin=self._on_ball_hit_platform
-        )
         
         self.draw_options = pymunk.pygame_util.DrawOptions(self.screen)
 
@@ -78,20 +58,13 @@ class GameStage(PhysicsScene):
         # 적용
         physics.body.velocity = (vx, vy)
 
-    def _on_ball_hit_platform(self, arbiter, space, data):
-        ball_shape, floor_shape = arbiter.shapes
-        body = ball_shape.body
-        floor = floor_shape.user_data
-
-        body.velocity = (body.velocity.x, -400)
-
 
     def draw(self):
         pass
 
     def handle_event(self, event: pygame.event.Event):
         if event.type == pygame.KEYDOWN:
-            print("!!")
+            print(pymunk.version)
 
     def _create_ball(self):
         # Dynamic Ball 생성
@@ -110,7 +83,7 @@ class GameStage(PhysicsScene):
         ball_shape = pymunk.Circle(ball_body, ball_radius)
         ball_shape.elasticity = 1
         ball_shape.friction = 0.5
-        ball_shape.collision_type = self.COLLISION_BALL
+        ball_shape.collision_type = object_type.BALL
         
         # 초기 위치, 속도 설정
         ball_body.position = ball_pos

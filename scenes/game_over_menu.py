@@ -1,3 +1,4 @@
+import os
 from pygame.event import Event
 from scene import Scene
 from object import GameObject
@@ -5,10 +6,10 @@ import colors
 import utils
 import pygame
 
-class MainMenuScene(Scene):
+class GameOverScene(Scene):
     def __init__(self, screen: pygame.Surface):
-        self.title = GameObject((420, 170), (800, 300), utils.imageLoad("title.png"), colors.BLACK)
-        self.playbutton = GameObject((300, 420), (500, 170), utils.imageLoad("playbutton.png"), colors.BLACK)
+        self.title = GameObject((420, 170), (800, 300), pygame.image.load(os.path.join("assets","title.png")), colors.BLACK)
+        self.playbutton = GameObject((300, 420), (500, 170), pygame.image.load(os.path.join("assets","playbutton.png")), colors.BLACK)
         
         self.objects = [
             GameObject(pygame.Vector2(screen.get_size()) / 2, screen.get_size(), utils.make_surface(screen.get_size(), colors.BLACK)),

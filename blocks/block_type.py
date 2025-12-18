@@ -1,2 +1,0 @@
-FLATFORM = 2
-THIN_BLOCK = 3
