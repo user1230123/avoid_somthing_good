@@ -15,7 +15,7 @@ def make_surface(size, color):
 
 #정적물체 생성(플랫폼)
 #생성할 위치와 이미지이름(예:"example.png"같은)
-def makeStaticObject(pos: tuple,imageName: str,size: tuple = None):
+def makeStaticObject(pos: tuple,imageName: str,size: tuple = None, collisionType = 2):
 
     static_Object_texture = pygame.image.load(os.path.join("assets","textures", imageName))
 
@@ -28,7 +28,7 @@ def makeStaticObject(pos: tuple,imageName: str,size: tuple = None):
 
     static_body = pymunk.Body(body_type=pymunk.Body.STATIC)
     static_shape = pymunk.Poly.create_box(static_body, static_Object_size)
-    static_shape.collision_type = 2
+    static_shape.collision_type = collisionType
 
     staticObject = GameObject(pos,static_Object_size,static_Object_texture)
 
