@@ -1,4 +1,3 @@
-import os
 from pygame.event import Event
 from scene import Scene
 from object import GameObject
@@ -8,12 +7,12 @@ import pygame
 
 class GameOverScene(Scene):
     def __init__(self, screen: pygame.Surface):
-        self.title = GameObject((420, 170), (800, 300), pygame.image.load(os.path.join("assets","title.png")), colors.BLACK)
-        self.playbutton = GameObject((300, 420), (500, 170), pygame.image.load(os.path.join("assets","playbutton.png")), colors.BLACK)
+        self.title = GameObject((640, 360), (1280, 720), utils.imageLoad("game_over.png"), colors.BLACK)
+        self.restartbutton = GameObject((640, 560), (500, 170), utils.imageLoad("restart_button.png"), colors.BLACK)
         
         self.objects = [
             GameObject(pygame.Vector2(screen.get_size()) / 2, screen.get_size(), utils.make_surface(screen.get_size(), colors.BLACK)),
-            self.title, self.playbutton
+            self.title, self.restartbutton
         ]
         super().__init__(screen, self.objects)
 
@@ -22,7 +21,7 @@ class GameOverScene(Scene):
 
     def handle_event(self, event: Event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.playbutton.get_rect().collidepoint(event.pos):
-                print("Play!!")
+            if self.restartbutton.get_rect().collidepoint(event.pos):
+                print("Restart!!")
                 self.manager.remove_scene_to_render(self.__class__.__name__)
                 self.manager.add_scene_to_render('GameStage')

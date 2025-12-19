@@ -7,6 +7,7 @@ import pymunk.pygame_util
 from scenes.physics_scene import PhysicsScene
 from object import GameObject
 from components.munk_physics import PhysicsComponent
+import settings
 import utils 
 
 
@@ -15,16 +16,35 @@ class GameStage(PhysicsScene):
         if objects is None:
             objects = []
         super().__init__(screen, objects,self)
-        
-        floor_pos = (25, 710)
 
-        floor_size = (30, 30)
+        block_size = settings.BLOCK_SIZE
+
+        block_pos = (20, block_size[1]*18-20)
         
         for x in range(0,42):
-            floor_pos_rept = (floor_pos[0] + 30*x,floor_pos[1])
-            floor_obj = utils.makeStaticObject(floor_pos_rept,"stone.png",floor_size,object_type.ELEVATOR_BLOCK)
-            super().add_object(floor_obj)
-        
+            block_pos_rept = (block_pos[0] + block_size[0]*x, block_pos[1])
+            block_obj = utils.makeStaticObject(block_pos_rept,"floor.png",block_size,object_type.PLATFORM)
+            super().add_object(block_obj)
+
+        for x in range(0,42):
+            block_pos_rept = (block_pos[0] + block_size[0]*x - 20, block_pos[1] - block_size[1]*9)
+            block_obj = utils.makeStaticObject(block_pos_rept,"floor.png",block_size,object_type.PLATFORM)
+            super().add_object(block_obj)
+
+        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[0]*17-20),"floor.png",block_size,object_type.PLATFORM))
+        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*16-20),"floor.png",block_size,object_type.PLATFORM))
+        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*15-20),"floor.png",block_size,object_type.PLATFORM))
+        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*14-20),"floor.png",block_size,object_type.PLATFORM))
+
+        super().add_object(utils.makeStaticObject((block_size[0]*4-20,block_size[1]*11-20),"gravity.png",block_size,object_type.GRAVITY_BLOCK))
+        super().add_object(utils.makeStaticObject((block_size[0]*4-20,block_size[1]*16-20),"gravity.png",block_size,object_type.GRAVITY_BLOCK))
+
+        super().add_object(utils.makeStaticObject((block_size[0]*9-20,block_size[1]*17-20),"spike.png",block_size,object_type.SPIKE_BLOCK))
+        super().add_object(utils.makeStaticObject((block_size[0]*10-20,block_size[1]*17-20),"complete.png",block_size,object_type.COMPLETE_BLOCK))
+
+        test_obj = utils.makeStaticObject((block_size[0]*3-20,block_size[1]*16-20),"elevator.png",block_size,object_type.ELEVATOR_BLOCK)
+        super().add_object(test_obj)
+
         self._create_ball()
         
         self.draw_options = pymunk.pygame_util.DrawOptions(self.screen)
@@ -58,6 +78,16 @@ class GameStage(PhysicsScene):
         # 적용
         physics.body.velocity = (vx, vy)
 
+        ball_pos = self.ball_obj.get_pos()
+
+        if ball_pos.x < 0 or ball_pos.y < 0:
+            self.manager.remove_scene_to_render(self.__class__.__name__)
+            self.manager.add_scene_to_render('GameOverScene')
+        if ball_pos.y > self.screen.get_height() or ball_pos.x > self.screen.get_width():
+            self.manager.remove_scene_to_render(self.__class__.__name__)
+            self.manager.add_scene_to_render('GameOverScene')
+        
+
 
     def draw(self):
         pass
@@ -68,8 +98,8 @@ class GameStage(PhysicsScene):
 
     def _create_ball(self):
         # Dynamic Ball 생성
-        ball_pos = (200, 50)
-        ball_radius = 10
+        ball_pos = (200, 600)
+        ball_radius = settings.BALL_RADIUS
         ball_size = (ball_radius * 2, ball_radius * 2)
         
         # 텍스처 생성
