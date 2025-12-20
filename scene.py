@@ -8,7 +8,9 @@ if TYPE_CHECKING: # Forward Reference Type Checking
 
 class Scene:
     # 모든 Scene은 ScreenManager에 등록되어 관리되어야 합니다.
-    def __init__(self, screen: pygame.Surface, objects: list[GameObject]):
+    def __init__(self, screen: pygame.Surface, objects):
+        if not isinstance(objects, list):
+            objects = []
         self.screen = screen
         self.objects = objects
 

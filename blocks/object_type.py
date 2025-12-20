@@ -9,8 +9,8 @@ ELEVATOR_BLOCK = 4
 GRAVITY_BLOCK = 5
 COMPLETE_BLOCK = 6
 
-collisionTriggerFuncs = {PLATFORM:object_trigger.platformBlockFunc,
-                         SPIKE_BLOCK:object_trigger.spikeBlockFunc,
-                         ELEVATOR_BLOCK:object_trigger.elevatorBlockFunc,
-                         GRAVITY_BLOCK:object_trigger.gravityBlockFunc,
-                         COMPLETE_BLOCK:object_trigger.completeBlockFunc}
+collisionTriggerFuncs = {PLATFORM:object_trigger.platform_block_func,
+                         SPIKE_BLOCK:object_trigger.spike_block_func,
+                         ELEVATOR_BLOCK:object_trigger.elevator_block_func,
+                         GRAVITY_BLOCK:object_trigger.gravity_block_func,
+                         COMPLETE_BLOCK:object_trigger.complete_block_func}

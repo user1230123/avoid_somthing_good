@@ -5,7 +5,7 @@ from object import GameObject
 import settings
 import utils
 
-def ballJumpFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene, forCheckOnly=False):
+def ball_jump_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene, forCheckOnly=False):
     ball_pos = ball_shape.body.position
     blockVertices = [v.x for v in block_shape.get_vertices()]
     blockMaxX = max(blockVertices) + block_shape.body.position.x
@@ -13,22 +13,22 @@ def ballJumpFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk
 
     if blockMaxX > ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMaxX < ball_pos.x+settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION:
         print("IN BLOCK X RANGE")
-        if ballJumpFuncSub(ball_shape, block_shape, space, forCheckOnly):
+        if ball_jump_func_sub(ball_shape, block_shape, space, forCheckOnly):
             return True
 
     if blockMaxX < ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMaxX > ball_pos.x+settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION:
         print("IN BLOCK X RANGE")
-        if ballJumpFuncSub(ball_shape, block_shape, space, forCheckOnly):
+        if ball_jump_func_sub(ball_shape, block_shape, space, forCheckOnly):
             return True
 
     if blockMinX < ball_pos.x < blockMaxX:
         print("IN BLOCK X RANGE")
-        if ballJumpFuncSub(ball_shape, block_shape, space, forCheckOnly):
+        if ball_jump_func_sub(ball_shape, block_shape, space, forCheckOnly):
             return True
         
     return False
 
-def ballJumpFuncSub(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, forCheckOnly=False):
+def ball_jump_func_sub(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, forCheckOnly=False):
     ball_pos = ball_shape.body.position
     block_pos = block_shape.body.position
     dotY = [v.y for v in block_shape.get_vertices()]
@@ -51,14 +51,14 @@ def ballJumpFuncSub(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pym
             return True
     return False
 
-def platformBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
-    ballJumpFunc(ball_shape, block_shape, space, scene)
+def platform_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+    ball_jump_func(ball_shape, block_shape, space, scene)
 
-def spikeBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+def spike_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
     scene.manager.add_scene_to_render('GameOverScene')
 
-def elevatorBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+def elevator_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
     #이미 리스폰 중이면 무시
     obj = getattr(block_shape, "user_data", None)
     obj:GameObject
@@ -70,7 +70,7 @@ def elevatorBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:p
     
     print("ELEVATOR BLOCK TRIGGERED")
 
-    if ballJumpFunc(ball_shape, block_shape, space, scene):
+    if ball_jump_func(ball_shape, block_shape, space, scene):
         if not hasattr(obj, "_max_uses"):
             obj._max_uses = getattr(obj, "max_uses", 5)
         if not hasattr(obj, "_remaining_uses"):
@@ -97,8 +97,8 @@ def elevatorBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:p
             if physics_comp:
                 physics_comp.remove_from_space(space)
 
-def gravityBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
-    if ballJumpFunc(ball_shape, block_shape, space, scene, forCheckOnly=True):
+def gravity_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+    if ball_jump_func(ball_shape, block_shape, space, scene, forCheckOnly=True):
         objects = scene.objects
 
         for obj in objects:
@@ -109,16 +109,16 @@ def gravityBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:py
             if physics_comp:
                 if physics_comp.shape.collision_type == 5: # object_type.GRAVITY_BLOCK
                     if space.gravity.y > 0:
-                        obj.texture = pygame.transform.scale(settings.GRAVITY_BLOCK_TEXTURE_TUPLE[1], obj.size)
+                        obj.texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[1]), obj.size)
                     else:
-                        obj.texture = pygame.transform.scale(settings.GRAVITY_BLOCK_TEXTURE_TUPLE[0], obj.size)
+                        obj.texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[0]), obj.size)
 
         if space.gravity.y > 0:
             space.gravity = (0, -900)
         else:
             space.gravity = (0, 900)
 
-def completeBlockFunc(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
-    scene.manager.add_scene_to_render('MainMenuScene')
+    scene.manager.add_scene_to_render('GameStage',None,utils.get_next_map_sequence(scene.map_class))
 

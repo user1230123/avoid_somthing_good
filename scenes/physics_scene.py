@@ -2,7 +2,7 @@ import logging
 from abc import abstractmethod
 
 import pymunk
-from blocks.object_func import collisionTrigger
+from blocks.object_func import collision_trigger
 from components.munk_physics import PhysicsComponent
 from object import GameObject
 import pygame
@@ -17,7 +17,7 @@ class PhysicsScene(Scene):
         self.space.gravity = (0, 900)
 
         #충돌 핸들러 등록
-        self.space.on_collision(begin=collisionTrigger,data=childClassInstance_Scene)
+        self.space.on_collision(begin=collision_trigger,data=childClassInstance_Scene)
 
         for obj in self.objects:
             physics_comp = obj.get_component(PhysicsComponent)

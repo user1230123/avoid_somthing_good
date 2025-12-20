@@ -1,49 +1,38 @@
+from pyclbr import Class
 import pygame
 import pymunk
 from blocks import object_type
 import colors
 import pymunk.pygame_util
+from typing import Type
 
 from scenes.physics_scene import PhysicsScene
 from object import GameObject
 from components.munk_physics import PhysicsComponent
+from scenes.stages.map import Map_Structure
 import settings
-import utils 
 
 
 class GameStage(PhysicsScene):
-    def __init__(self, screen: pygame.Surface, objects: list[GameObject] | None = None):
+    def __init__(self, screen: pygame.Surface, objects: list[GameObject] | None = None, map_class: Type[Map_Structure] | None = None):
         if objects is None:
             objects = []
         super().__init__(screen, objects,self)
+        
+        self.map_class = map_class
+
+        print("GameStage: Initializing GameStage")
+        print(f"GameStage: map_class is {map_class}")
+        if map_class is not None:
+            print(f"GameStage: Loading map {map_class.__name__}")
+            self.map_instance = map_class(self)
+            self.map_instance:Map_Structure
+            for obj in self.map_instance.map_objs:
+                super().add_object(obj)
 
         block_size = settings.BLOCK_SIZE
 
         block_pos = (20, block_size[1]*18-20)
-        
-        for x in range(0,42):
-            block_pos_rept = (block_pos[0] + block_size[0]*x, block_pos[1])
-            block_obj = utils.makeStaticObject(block_pos_rept,"floor.png",block_size,object_type.PLATFORM)
-            super().add_object(block_obj)
-
-        for x in range(0,42):
-            block_pos_rept = (block_pos[0] + block_size[0]*x - 20, block_pos[1] - block_size[1]*9)
-            block_obj = utils.makeStaticObject(block_pos_rept,"floor.png",block_size,object_type.PLATFORM)
-            super().add_object(block_obj)
-
-        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[0]*17-20),"floor.png",block_size,object_type.PLATFORM))
-        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*16-20),"floor.png",block_size,object_type.PLATFORM))
-        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*15-20),"floor.png",block_size,object_type.PLATFORM))
-        super().add_object(utils.makeStaticObject((block_size[0]*2-20,block_size[1]*14-20),"floor.png",block_size,object_type.PLATFORM))
-
-        super().add_object(utils.makeStaticObject((block_size[0]*4-20,block_size[1]*11-20),"gravity.png",block_size,object_type.GRAVITY_BLOCK))
-        super().add_object(utils.makeStaticObject((block_size[0]*4-20,block_size[1]*16-20),"gravity.png",block_size,object_type.GRAVITY_BLOCK))
-
-        super().add_object(utils.makeStaticObject((block_size[0]*9-20,block_size[1]*17-20),"spike.png",block_size,object_type.SPIKE_BLOCK))
-        super().add_object(utils.makeStaticObject((block_size[0]*10-20,block_size[1]*17-20),"complete.png",block_size,object_type.COMPLETE_BLOCK))
-
-        test_obj = utils.makeStaticObject((block_size[0]*3-20,block_size[1]*16-20),"elevator.png",block_size,object_type.ELEVATOR_BLOCK)
-        super().add_object(test_obj)
 
         self._create_ball()
         
@@ -98,7 +87,7 @@ class GameStage(PhysicsScene):
 
     def _create_ball(self):
         # Dynamic Ball 생성
-        ball_pos = (200, 600)
+        ball_pos = self.map_instance.ball_start_pos
         ball_radius = settings.BALL_RADIUS
         ball_size = (ball_radius * 2, ball_radius * 2)
         

@@ -1,7 +1,7 @@
 import pymunk
 from blocks import object_type
 
-def collisionTrigger(arbiter, space, data):
+def collision_trigger(arbiter, space, data):
     current_scene = data
     shape_a, shape_b = arbiter.shapes
     shape_a: pymunk.Shape

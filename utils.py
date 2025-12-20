@@ -4,6 +4,7 @@ import pymunk
 
 from components.munk_physics import PhysicsComponent
 from object import GameObject
+import settings
 
 def make_surface(size, color):
     """
@@ -16,14 +17,14 @@ def make_surface(size, color):
 def seconds_to_frames(seconds: float, fps: int = 60) -> int:
     return int(seconds * int(os.getenv("FPS", fps)))
 
-def imageLoad(*path:str):
+def image_load(*path:str):
     return pygame.image.load(os.path.join("assets",*path))
 
 #정적물체 생성(플랫폼)
 #생성할 위치와 이미지이름(예:"example.png"같은)
-def makeStaticObject(pos: tuple,imageName: str,size: tuple = None, collisionType = 2):
+def make_static_object(pos: tuple, imageName: str, collisionType = 2, size: tuple = settings.BLOCK_SIZE): # (object_type.PLATFORM = 2)
 
-    static_Object_texture = imageLoad("block_textures", imageName)
+    static_Object_texture = image_load("block_textures", imageName)
 
     if size is None:
         static_Object_height = static_Object_texture.get_height()
@@ -37,9 +38,17 @@ def makeStaticObject(pos: tuple,imageName: str,size: tuple = None, collisionType
     static_shape = pymunk.Poly.create_box(static_body, static_Object_size)
     static_shape.collision_type = collisionType
 
-    staticObject = GameObject(pos,static_Object_size,static_Object_texture)
+    static_object = GameObject(pos,static_Object_size,static_Object_texture)
 
-    static_shape.user_data = staticObject
+    static_shape.user_data = static_object
     
-    staticObject.add_component(PhysicsComponent(static_body,static_shape))
-    return staticObject
+    static_object.add_component(PhysicsComponent(static_body,static_shape))
+    return static_object
+
+def pos_by_one_block(pos_for_one_block_x, pos_for_one_block_y):
+    """
+    실제 오브젝트 위치를 블록 인덱스로 변환합니다.
+    """
+    x_index = int((pos_for_one_block_x - 0.5) * settings.BLOCK_SIZE[0])
+    y_index = int((settings.SCREEN_BLOCK_SIZE[1] - pos_for_one_block_y + 0.5) * settings.BLOCK_SIZE[1])
+    return (x_index, y_index)
