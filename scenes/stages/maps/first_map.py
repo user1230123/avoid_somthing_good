@@ -27,6 +27,6 @@ class FirstMap(Map_Structure):
         gravity_block = utils.make_static_object(utils.pos_by_one_block(25, 14), "gravity.png",object_type.GRAVITY_BLOCK)
         super().add_map_object(gravity_block)
         # 점프 블록 생성
-        jump_block = utils.make_static_object(utils.pos_by_one_block(5, 10), "jump.png", object_type.JUMP_BLOCK)
+        jump_block = utils.make_static_object(utils.pos_by_one_block(5, 10), "jump.png", object_type.COMPLETE_BLOCK)
         super().add_map_object(jump_block)
         
