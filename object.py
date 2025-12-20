@@ -11,11 +11,12 @@ class GameObject:
                  texture: pygame.Surface,
                  is_visible = True, rotation: float = 0,
 
-                 components: dict[Type[Component], Component] | None = None,):
+                 components: dict[Type[Component], Component] | None = None):
         self.pos = Vector2(pos)
         self.size = size
         self.rotation = rotation
 
+        
         self.original_texture = pygame.transform.scale(texture, size)
         self.texture = self.original_texture
 

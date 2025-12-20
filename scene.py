@@ -40,6 +40,7 @@ class Scene:
                 self.objects_to_remove.add(object)
             return True
         return False
+        
 
     @abstractmethod
     def update(self, dt: float):

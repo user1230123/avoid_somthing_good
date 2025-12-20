@@ -12,6 +12,7 @@ from object import GameObject
 from components.munk_physics import PhysicsComponent
 from scenes.stages.map import Map_Structure
 import settings
+import utils
 
 
 class GameStage(PhysicsScene):
@@ -19,10 +20,11 @@ class GameStage(PhysicsScene):
         if objects is None:
             objects = []
         super().__init__(screen, objects,self)
+
+        print("GameStage: Initializing GameStage")
         
         self.map_class = map_class
 
-        print("GameStage: Initializing GameStage")
         print(f"GameStage: map_class is {map_class}")
         if map_class is not None:
             print(f"GameStage: Loading map {map_class.__name__}")
@@ -30,6 +32,9 @@ class GameStage(PhysicsScene):
             self.map_instance:Map_Structure
             for obj in self.map_instance.map_objs:
                 super().add_object(obj)
+
+        self.fonts = []
+        self.fonts:list[pygame.Surface]
 
         block_size = settings.BLOCK_SIZE
 
@@ -41,6 +46,10 @@ class GameStage(PhysicsScene):
 
     def update(self, dt: float):
         physics = self.ball_obj.get_component(PhysicsComponent)
+
+        #플레이 타임 표기용 폰트 서피스
+        self.fonts.append(utils.make_font_surface(60,None,"Time: "+str(round(self.manager.play_time,2)),colors.PINK))
+
         vx, vy = physics.body.velocity
 
         acceleration = 500  # px/s^2, 얼마나 빨리 가속할지
@@ -78,9 +87,13 @@ class GameStage(PhysicsScene):
             self.manager.add_scene_to_render('GameOverScene')
         
 
-
     def draw(self):
-        pass
+        #폰트를 화면에 그림(위치는 하드코딩)
+        for font in self.fonts:
+            self.fonts.remove(font)
+            font_pos = utils.pos_by_one_block(1,1)
+            font_pos = (font_pos[0],font_pos[1]-20)
+            self.screen.blit(font,font_pos)
 
     def handle_event(self, event: pygame.event.Event):
         pass

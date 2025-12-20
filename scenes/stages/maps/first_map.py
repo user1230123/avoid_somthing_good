@@ -54,9 +54,15 @@ class FirstMap(Map_Structure):
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(14,4),'spike.png',object_type.SPIKE_BLOCK))
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(18,4),'spike.png',object_type.SPIKE_BLOCK))
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(22,4),'spike.png',object_type.SPIKE_BLOCK))
+        super().add_map_object(utils.make_static_object(utils.pos_by_one_block(14,3),'floor.png',object_type.PLATFORM))
+        super().add_map_object(utils.make_static_object(utils.pos_by_one_block(18,3),'floor.png',object_type.PLATFORM))
+        super().add_map_object(utils.make_static_object(utils.pos_by_one_block(22,3),'floor.png',object_type.PLATFORM))
+
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(15,13),'spike.png',object_type.SPIKE_BLOCK))
 
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(13,13),'floor.png',object_type.PLATFORM))
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(13,14),'floor.png',object_type.PLATFORM))
 
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(9,10),'complete.png',object_type.COMPLETE_BLOCK))
+
+        

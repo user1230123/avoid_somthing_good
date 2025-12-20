@@ -1,6 +1,7 @@
 import os
 import pygame
 import pymunk
+import pygame.freetype
 
 from components.munk_physics import PhysicsComponent
 from object import GameObject
@@ -52,3 +53,16 @@ def pos_by_one_block(pos_for_one_block_x, pos_for_one_block_y):
     x_index = int((pos_for_one_block_x - 0.5) * settings.BLOCK_SIZE[0])
     y_index = int((settings.SCREEN_BLOCK_SIZE[1] - pos_for_one_block_y + 0.5) * settings.BLOCK_SIZE[1])
     return (x_index, y_index)
+
+def make_font_surface(size: int = 30, font_path: str = None, text: str = "Font", color: tuple = (255, 255, 255)):
+    """
+    폰트를 생성합니다.
+    """
+    
+    if font_path is None:
+        font = pygame.font.SysFont(None, size)
+    else:
+        font = pygame.font.Font(font_path, size)
+
+    font_surface = font.render(text, True, color)
+    return font_surface

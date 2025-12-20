@@ -81,7 +81,7 @@ def elevator_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
         if obj._remaining_uses >= 0:
 
             new_pos = (block_shape.body.position.x, block_shape.body.position.y - settings.BLOCK_SIZE[1])
-            total_frames = utils.seconds_to_frames(0.2)
+            total_frames = utils.seconds_to_frames(0.1)
             obj.respawning = total_frames
 
             # 위치 변경 콜백
@@ -121,10 +121,11 @@ def gravity_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:
 def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene:GameStage):
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
     if map_sequence.get_next_map_sequence(scene.map_class) == map_sequence.get_next_map_sequence():
-        scene.manager.add_scene_to_render('MainMenuScene')
+        scene.manager.add_scene_to_render('GameClearScene', scene.manager.play_time)
         return
     scene.manager.add_scene_to_render('GameStage',None,map_sequence.get_next_map_sequence(scene.map_class))
 
 def jump_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
     if ball_jump_func(ball_shape, block_shape, space, scene, forCheckOnly=True):
         ball_shape.body.velocity = (ball_shape.body.velocity.x, -settings.BALL_JUMP_POWER * 1.5)
+

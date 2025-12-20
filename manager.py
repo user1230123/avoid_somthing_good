@@ -3,6 +3,7 @@ from scene import Scene
 import pygame
 
 from scenes.physics_scene import PhysicsScene
+import utils
 
 class SceneManager:
     # SceneManager는 FIFO (First In First Out) 에 따라 Draw하므로, 마지막 Scene이 위에 그려집니다.
@@ -15,6 +16,10 @@ class SceneManager:
             self.scenes = [scenes]
         else:
             self.scenes = scenes
+
+        self.background = utils.image_load("background.png")
+
+        self.play_time = 0.0 # 총 플레이 시간(프레임 단위 누적)
 
         self.screen = screen
 
@@ -102,6 +107,7 @@ class SceneManager:
             scene.handle_event(event)
 
     def _update(self, dt: float):
+        self.play_time += dt
         for scene in self.scenes_to_render: # Render로 지정된 Scene update
             scene._update(dt)
 
@@ -120,6 +126,9 @@ class SceneManager:
                 del self.scenes_dict[scene_class.__name__]
         self.scenes_to_remove.clear()
 
+    
+
     def _draw(self):
         for scene in self.scenes_to_render:
+            self.screen.blit(self.background, (0,0))
             scene._draw()
