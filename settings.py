@@ -8,3 +8,5 @@ GRAVITY_BLOCK_TEXTURE_TUPLE = (("block_textures","gravity.png"),("block_textures
 # 가로 32개 , 세로 18개 블록 기준
 SCREEN_BLOCK_SIZE = (32,18)
 BLOCK_SIZE = (40,40)
+
+BALL_CANNON_POWER = 800

@@ -15,4 +15,5 @@ collisionTriggerFuncs = {PLATFORM:object_trigger.platform_block_func,
                          ELEVATOR_BLOCK:object_trigger.elevator_block_func,
                          GRAVITY_BLOCK:object_trigger.gravity_block_func,
                          COMPLETE_BLOCK:object_trigger.complete_block_func,
-                         JUMP_BLOCK:object_trigger.jump_block_func}
+                         JUMP_BLOCK:object_trigger.jump_block_func
+                         }

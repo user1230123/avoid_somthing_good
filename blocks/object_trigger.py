@@ -73,10 +73,8 @@ def elevator_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
     print("ELEVATOR BLOCK TRIGGERED")
 
     if ball_jump_func(ball_shape, block_shape, space, scene):
-        if not hasattr(obj, "_max_uses"):
-            obj._max_uses = getattr(obj, "max_uses", 5)
         if not hasattr(obj, "_remaining_uses"):
-            obj._remaining_uses = obj._max_uses
+            obj._remaining_uses = 5 #사용 횟수 설정
 
         obj._remaining_uses -= 1
 

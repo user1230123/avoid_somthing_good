@@ -1,11 +1,12 @@
 from pyclbr import Class
 import pygame
 import pymunk
-from blocks import object_type
+from blocks import object_trigger, object_type
 import colors
 import pymunk.pygame_util
 from typing import Type
 
+import scene
 from scenes.physics_scene import PhysicsScene
 from object import GameObject
 from components.munk_physics import PhysicsComponent
@@ -82,9 +83,8 @@ class GameStage(PhysicsScene):
         pass
 
     def handle_event(self, event: pygame.event.Event):
-        if event.type == pygame.KEYDOWN:
-            print(pymunk.version)
-
+        pass
+    
     def _create_ball(self):
         # Dynamic Ball 생성
         ball_pos = self.map_instance.ball_start_pos

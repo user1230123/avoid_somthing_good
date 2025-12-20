@@ -39,6 +39,7 @@ class FirstMap(Map_Structure):
             block_pos_rept = utils.pos_by_one_block(x,10)
             block_obj = utils.make_static_object(block_pos_rept,'spike.png',object_type.SPIKE_BLOCK)
             super().add_map_object(block_obj)
+
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(12,1),'jump.png',object_type.JUMP_BLOCK))
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(16,1),'jump.png',object_type.JUMP_BLOCK))
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(20,1),'jump.png',object_type.JUMP_BLOCK))
