@@ -54,6 +54,7 @@ class SceneManager:
             for scene_to_render in self.scenes_to_render:
                 if scene_to_render.__class__.__name__ == scene_name:
                     self.scenes_to_remove_render.add(scene_to_render)
+                    self.render_names_set.discard(scene_name)
                     return True
         return False
 

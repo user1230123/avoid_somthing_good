@@ -3,6 +3,7 @@ import pymunk
 from components.munk_physics import PhysicsComponent
 from object import GameObject
 from scenes.stages.maps import map_sequence
+from scenes.stages.stage import GameStage
 import settings
 import utils
 
@@ -119,9 +120,9 @@ def gravity_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:
         else:
             space.gravity = (0, 900)
 
-def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene:GameStage):
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
-    if map_sequence.get_next_map_sequence(scene.map_class) == scene.map_class:
+    if map_sequence.get_next_map_sequence(scene.map_class) == map_sequence.get_next_map_sequence():
         scene.manager.add_scene_to_render('MainMenuScene')
         return
     scene.manager.add_scene_to_render('GameStage',None,map_sequence.get_next_map_sequence(scene.map_class))
