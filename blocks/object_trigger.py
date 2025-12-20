@@ -122,3 +122,6 @@ def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
     scene.manager.add_scene_to_render('GameStage',None,utils.get_next_map_sequence(scene.map_class))
 
+def jump_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+    if ball_jump_func(ball_shape, block_shape, space, scene, forCheckOnly=True):
+        ball_shape.body.velocity = (ball_shape.body.velocity.x, -settings.BALL_JUMP_POWER * 1.5)
