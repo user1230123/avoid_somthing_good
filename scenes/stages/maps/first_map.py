@@ -64,5 +64,6 @@ class FirstMap(Map_Structure):
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(13,14),'floor.png',object_type.PLATFORM))
 
         super().add_map_object(utils.make_static_object(utils.pos_by_one_block(9,10),'complete.png',object_type.COMPLETE_BLOCK))
+        super().add_map_object(utils.make_static_object(utils.pos_by_one_block(4,3),'complete.png',object_type.COMPLETE_BLOCK))
 
         

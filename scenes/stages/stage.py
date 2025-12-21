@@ -14,7 +14,6 @@ from scenes.stages.map import Map_Structure
 import settings
 import utils
 
-
 class GameStage(PhysicsScene):
     def __init__(self, screen: pygame.Surface, objects: list[GameObject] | None = None, map_class: Type[Map_Structure] | None = None):
         if objects is None:
@@ -35,10 +34,6 @@ class GameStage(PhysicsScene):
 
         self.fonts = []
         self.fonts:list[pygame.Surface]
-
-        block_size = settings.BLOCK_SIZE
-
-        block_pos = (20, block_size[1]*18-20)
 
         self._create_ball()
         
@@ -88,7 +83,7 @@ class GameStage(PhysicsScene):
         
 
     def draw(self):
-        #폰트를 화면에 그림(위치는 하드코딩)
+        #플레이 타임을 화면에 그림(위치는 하드코딩)
         for font in self.fonts:
             self.fonts.remove(font)
             font_pos = utils.pos_by_one_block(1,1)
@@ -97,6 +92,7 @@ class GameStage(PhysicsScene):
 
     def handle_event(self, event: pygame.event.Event):
         pass
+
     
     def _create_ball(self):
         # Dynamic Ball 생성

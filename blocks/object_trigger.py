@@ -101,6 +101,14 @@ def gravity_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:
     if ball_jump_func(ball_shape, block_shape, space, scene, forCheckOnly=True):
         objects = scene.objects
 
+        obj_texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[1]), settings.BLOCK_SIZE)
+
+        if space.gravity.y > 0:
+            space.gravity = (0, -900)
+        else:
+            obj_texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[0]), settings.BLOCK_SIZE)
+            space.gravity = (0, 900)
+
         for obj in objects:
             obj:GameObject
             physics_comp = obj.get_component(PhysicsComponent)
@@ -108,20 +116,12 @@ def gravity_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:
             
             if physics_comp:
                 if physics_comp.shape.collision_type == 5: # object_type.GRAVITY_BLOCK
-                    if space.gravity.y > 0:
-                        obj.texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[1]), obj.size)
-                    else:
-                        obj.texture = pygame.transform.scale(utils.image_load(*settings.GRAVITY_BLOCK_TEXTURE_TUPLE[0]), obj.size)
-
-        if space.gravity.y > 0:
-            space.gravity = (0, -900)
-        else:
-            space.gravity = (0, 900)
+                    obj.texture = obj_texture
 
 def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene:GameStage):
     scene.manager.remove_scene_to_render(scene.__class__.__name__)
     if map_sequence.get_next_map_sequence(scene.map_class) == map_sequence.get_next_map_sequence():
-        scene.manager.add_scene_to_render('GameClearScene', scene.manager.play_time)
+        scene.manager.add_scene_to_render('GameClearScene', scene.manager.play_time, scene.manager.player_score)
         return
     scene.manager.add_scene_to_render('GameStage',None,map_sequence.get_next_map_sequence(scene.map_class))
 

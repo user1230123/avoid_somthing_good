@@ -19,6 +19,7 @@ class SceneManager:
 
         self.background = utils.image_load("background.png")
 
+        self.player_score = 0.0
         self.play_time = 0.0 # 총 플레이 시간(프레임 단위 누적)
 
         self.screen = screen
