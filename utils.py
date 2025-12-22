@@ -1,7 +1,6 @@
 import os
 import pygame
 import pymunk
-import pygame.freetype
 
 from components.munk_physics import PhysicsComponent
 from object import GameObject
@@ -15,8 +14,8 @@ def make_surface(size, color):
     surf.fill(color)
     return surf
 
-def seconds_to_frames(seconds: float, fps: int = 60) -> int:
-    return int(seconds * int(os.getenv("FPS", fps)))
+def seconds_to_frames(seconds: float, fps: int = 1000) -> int:
+    return int(seconds * fps)
 
 def image_load(*path:str):
     return pygame.image.load(os.path.join("assets",*path))

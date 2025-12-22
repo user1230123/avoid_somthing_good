@@ -35,5 +35,5 @@ class GameOverScene(Scene):
                 self.manager.remove_scene_to_render(self.__class__.__name__)
                 self.manager.play_time = 0.0
                 self.manager.player_score = 0.0
-                self.manager.add_scene_to_render('GameStage',None,map_sequence.get_next_map_sequence(None))
+                self.manager.add_scene_to_render('MainMenuScene')
                 pygame.key.stop_text_input()

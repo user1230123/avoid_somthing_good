@@ -10,6 +10,7 @@ class PhysicsComponent(Component):
         super().__init__()
         self.body = body
         self.shape = shape
+        self.isRemoved = True
         self.body.component = self  # Body에 컴포넌트 참조 저장
 
     def set_owner(self, owner: 'GameObject'):
@@ -25,8 +26,12 @@ class PhysicsComponent(Component):
 
     def add_to_space(self, space: pymunk.Space):
         """Space에 Body와 Shape를 추가합니다."""
-        space.add(self.body, self.shape)
+        if self.isRemoved:
+            space.add(self.body, self.shape)
+            self.isRemoved = False
 
     def remove_from_space(self, space: pymunk.Space):
         """Space에서 Body와 Shape를 제거합니다."""
-        space.remove(self.body, self.shape)
+        if not self.isRemoved:
+            space.remove(self.body, self.shape)
+            self.isRemoved = True

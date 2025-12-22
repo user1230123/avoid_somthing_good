@@ -35,7 +35,7 @@ class PhysicsScene(Scene):
 
 
     #space에 중복으로 body와 shape가 등록되는 것을 막습니다.
-    def remove_physics(self, objects: GameObject):
+    def remove_physics(self, objects: GameObject | list[GameObject]):
         if isinstance(objects,list):
             for object in objects:
                 physics_comp = object.get_component(PhysicsComponent)
@@ -59,6 +59,7 @@ class PhysicsScene(Scene):
                 print(timer)
                 if obj.respawning <= 0:
                     physics_comp = obj.get_component(PhysicsComponent)
+                    obj.is_visible = True
                     if physics_comp:
                         physics_comp.add_to_space(self.space)
                     else:

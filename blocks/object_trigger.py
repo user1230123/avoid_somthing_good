@@ -69,10 +69,9 @@ def elevator_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
 
     if getattr(obj, "respawning", 0):
         return
-    
-    print("ELEVATOR BLOCK TRIGGERED")
 
     if ball_jump_func(ball_shape, block_shape, space, scene):
+        print("ELEVATOR BLOCK TRIGGERED")
         if not hasattr(obj, "_remaining_uses"):
             obj._remaining_uses = 5 #사용 횟수 설정
 
@@ -81,7 +80,7 @@ def elevator_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
         if obj._remaining_uses >= 0:
 
             new_pos = (block_shape.body.position.x, block_shape.body.position.y - settings.BLOCK_SIZE[1])
-            total_frames = utils.seconds_to_frames(0.1)
+            total_frames = utils.seconds_to_frames(0.12)
             obj.respawning = total_frames
 
             # 위치 변경 콜백
@@ -128,4 +127,25 @@ def complete_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space
 def jump_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
     if ball_jump_func(ball_shape, block_shape, space, scene, forCheckOnly=True):
         ball_shape.body.velocity = (ball_shape.body.velocity.x, -settings.BALL_JUMP_POWER * 1.5)
+
+def glass_block_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymunk.space, scene):
+    #이미 리스폰 중이면 무시
+    obj = getattr(block_shape, "user_data", None)
+    obj:GameObject
+    if obj is None:
+        return
+
+    if getattr(obj, "respawning", 0):
+        return
+
+    if ball_jump_func(ball_shape, block_shape, space, scene):
+        print("GLASS BLOCK TRIGGERED")
+        total_frames = utils.seconds_to_frames(5)
+        obj.respawning = total_frames
+
+        #collision 삭제
+        obj.is_visible = False
+        physics_comp = obj.get_component(PhysicsComponent)
+        if physics_comp:
+            physics_comp.remove_from_space(space)
 

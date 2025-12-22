@@ -1,3 +1,4 @@
+from scenes.stages.maps.third_map import ThirdMap
 from scenes.stages.maps.first_map import FirstMap
 from scenes.stages.maps.second_map import SecondMap
 
