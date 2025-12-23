@@ -56,7 +56,6 @@ class PhysicsScene(Scene):
             timer = getattr(obj, "respawning", 0)
             if timer:
                 obj.respawning = timer - 1
-                print(timer)
                 if obj.respawning <= 0:
                     physics_comp = obj.get_component(PhysicsComponent)
                     obj.is_visible = True

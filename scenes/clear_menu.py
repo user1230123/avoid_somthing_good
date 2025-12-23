@@ -15,7 +15,7 @@ class GameClearScene(Scene):
         self.isTyping = False
         self.font = utils.make_font_surface(self.font_size, None, self.text, colors.LIGHT_GRAY)
         self.guide_font = utils.make_font_surface(self.font_size, None, 'Please enter your nickname', colors.BLUE)
-        self.guide_font_highlight_time = utils.seconds_to_frames(1)
+        self.guide_font_highlight_time = 0
 
         self.isConfirmed = False
 
@@ -77,13 +77,14 @@ class GameClearScene(Scene):
                 self.manager.add_scene_to_render('MainMenuScene')
 
             #텍스트 상자
-            if self.input_box.get_rect().collidepoint(event.pos):
+            if self.input_box.get_rect().collidepoint(event.pos) and not self.isConfirmed:
                 self.isTyping = True
                 pygame.key.start_text_input()
             
             #확인 버튼
-            if self.confirm_button.get_rect().collidepoint(event.pos):
+            if self.confirm_button.get_rect().collidepoint(event.pos) and not self.isConfirmed:
                 if self.text.strip() != "":
+                    pygame.key.stop_text_input()
                     #requests.post('http://api-dev.kro.kr:8080/register?name=' + self.player_name + '&score=' + player_score) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 점수 저장
                     print("점수 저장 꺼져있음!!!!!!!!!!!!!!!!!!!!!!")
                     print(self.text + ' -> ' + str(self.player_score))

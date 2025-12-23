@@ -14,6 +14,7 @@ dotenv.load_dotenv()
 
 # Constants
 FPS = int(os.getenv("FPS", "60"))
+print(FPS)
 WIDTH = int(os.getenv("WIDTH", "600"))
 HEIGHT = int(os.getenv("HEIGHT", "600"))
 

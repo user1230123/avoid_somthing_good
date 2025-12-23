@@ -24,6 +24,17 @@ class FirstMap(Map_Structure):
             block_pos_rept = utils.pos_by_one_block(x,12)
             block_obj = utils.make_static_object(block_pos_rept,'floor.png',object_type.PLATFORM)
             super().add_map_object(block_obj)
+        
+
+
+        for x in range(2,5):
+            block_pos_rept = utils.pos_by_one_block(4,x)
+            block_obj = utils.make_static_object(block_pos_rept,'floor.png',object_type.PLATFORM)
+            super().add_map_object(block_obj)
+
+
+
+
 
         for x in range(5,17,3):
             block_pos_rept = utils.pos_by_one_block(x,18)

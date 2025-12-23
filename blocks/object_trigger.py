@@ -13,12 +13,12 @@ def ball_jump_func(ball_shape:pymunk.Shape, block_shape:pymunk.Shape, space:pymu
     blockMaxX = max(blockVertices) + block_shape.body.position.x
     blockMinX = min(blockVertices) + block_shape.body.position.x
 
-    if blockMaxX > ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMaxX < ball_pos.x+settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION:
+    if blockMinX > ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMinX < ball_pos.x+settings.BALL_RADIUS-settings.BALL_JUMP_CORRECTION:
         print("IN BLOCK X RANGE")
         if ball_jump_func_sub(ball_shape, block_shape, space, forCheckOnly):
             return True
 
-    if blockMaxX < ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMaxX > ball_pos.x+settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION:
+    if blockMaxX > ball_pos.x-settings.BALL_RADIUS+settings.BALL_JUMP_CORRECTION and blockMaxX < ball_pos.x+settings.BALL_RADIUS-settings.BALL_JUMP_CORRECTION:
         print("IN BLOCK X RANGE")
         if ball_jump_func_sub(ball_shape, block_shape, space, forCheckOnly):
             return True
